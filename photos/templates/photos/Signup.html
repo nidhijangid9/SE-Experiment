@@ -1,0 +1,47 @@
+
+<!-- templates/photos/signup.html -->
+{% extends "photos/base.html" %}
+{% block title %}Sign Up - Gallery{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2 class="m-0">Create Account</h2>
+        </div>
+        <div class="auth-body">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <div class="error-message">{{ form.username.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="error-message">{{ form.email.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <div class="error-message">{{ form.password1.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <div class="error-message">{{ form.password2.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary btn-auth">Sign Up</button>
+            </form>
+            <div class="text-center mt-4">
+                <p class="mb-0">Already have an account? <a href="{% url 'login' %}" class="text-decoration-none">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

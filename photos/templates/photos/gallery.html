@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-primary: #f4f4f8;
+        --text-primary: #1a1a2e;
+        --accent-color: #4a6cf7;
+        --card-bg: white;
+      }
+
+      body {
+        background-color: var(--bg-primary);
+        font-family: 'Inter', sans-serif;
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1400px;
+        padding-top: 50px;
+      }
+
+      .sidebar {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        padding: 25px;
+        position: sticky;
+        top: 50px;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar:hover {
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      }
+
+      .category-list {
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .category-list a {
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .category-list a:hover {
+        color: var(--accent-color);
+        transform: translateX(5px);
+      }
+
+      .gallery-card {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.4s ease;
+        transform-origin: center;
+      }
+
+      .gallery-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+      }
+
+      .image-thumbnail {
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+
+      .gallery-card .btn-view {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+      }
+
+      .gallery-card .btn-view:hover {
+        background-color: #3a5ae7;
+        transform: translateY(-3px);
+      }
+
+      .btn-add-photo {
+        background-color: #3a5ae7;
+        border: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-add-photo:hover {
+        background-color: #3e2797;
+        transform: translateY(-2px);
+      }
+
+      .empty-message {
+        background-color: white;
+        border-radius: 15px;
+        padding: 50px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          position: static;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="sidebar">
+            <h5 class="mb-4">Categories</h5>
+            <ul class="list-group category-list">
+              <li class="list-group-item border-0">
+                <a href="{% url 'gallery' %}">All Photos</a>
+              </li>
+              {% for category in categories %}
+                <li class="list-group-item border-0">
+                  <a href="{% url 'gallery' %}?category={{ category.name }}">
+                    {{ category.name|title }}
+                  </a>
+                </li>
+              {% endfor %}
+              <li class="list-group-item border-0 text-center mt-3">
+                <a href="{% url 'add' %}" class="btn btn-add-photo w-100">Add Photo</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="row g-4">
+            {% for photo in photos %}
+              <div class="col-md-4">
+                <div class="gallery-card">
+                  <img src="{{ photo.image.url }}" class="image-thumbnail w-100" alt="{{ photo.name }}" />
+                  <div class="p-3">
+                    <small class="d-block mb-2 text-muted">{{ photo.category.name|title }}</small>
+                    <small class="text-muted">By {{ photo.user.username }}</small>
+                    <a href="{% url 'photo' photo.id %}" class="btn btn-view w-100 mt-3">View Details</a>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-12">
+                <div class="empty-message">
+                  <h3>No photos available</h3>
+                  <p>Start adding some awesome images!</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

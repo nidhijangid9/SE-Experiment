@@ -1,0 +1,33 @@
+{% extends "photos/base.html" %}
+{% block title %}Login - Gallery{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2 class="m-0">Login to Gallery</h2>
+        </div>
+        <div class="auth-body">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <div class="error-message">{{ form.username.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                    <div class="error-message">{{ form.password.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary btn-auth">Log In</button>
+            </form>
+            <div class="text-center mt-4">
+                <p class="mb-0">Don't have an account? <a href="{% url 'register' %}" class="text-decoration-none">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
